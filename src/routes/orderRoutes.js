@@ -53,4 +53,16 @@ router.put('/:id/status', requireAuth, requireAdmin, async (req, res, next) => {
   }
 })
 
+router.delete('/:id', requireAuth, requireAdmin, async (req, res, next) => {
+  try {
+    const order = await Order.findByIdAndDelete(req.params.id)
+    if (!order) {
+      return res.status(404).json({ message: 'Orden no encontrada' })
+    }
+    res.json({ success: true })
+  } catch (error) {
+    next(error)
+  }
+})
+
 export default router
